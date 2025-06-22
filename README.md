@@ -67,9 +67,16 @@ npm run dev
 
 ## 📁 Project Structure
 mini-blog/
+
+
 ├── backend/     # NestJS API
+
+
 ├── frontend/    # React UI
+
+
 └── package.json # Dev scripts & concurrently
+
 
 ## 📜 Scripts
 - npm run dev             # Run frontend and backend together

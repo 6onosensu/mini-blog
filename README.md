@@ -24,7 +24,7 @@ cd mini-blog
 
 
 ### 2. Install dependencies
-Root (for dev scripts)
+#### Root (for dev scripts)
 
 ```bash
 npm install
@@ -44,8 +44,8 @@ cd ../frontend
 npm install
 ```
 
-### 3.🧪 Development
-From the project root:
+## 🧪 Development
+### From the project root:
 
 ```bash
 npm run dev
@@ -55,7 +55,7 @@ npm run dev
 Frontend on http://localhost:3000
 Backend on http://localhost:3001 (default)
 
-### 4.🛠 Features (MVP)
+## 🛠 Features (MVP)
  User registration & login (JWT)
  Roles: Admin (can post), Guest (read-only)
  CRUD for blog posts (title, content, tags)
@@ -64,13 +64,13 @@ Backend on http://localhost:3001 (default)
  Rich text editor (e.g., React Quill)
  Pagination or infinite scroll
 
-### 5.📁 Project Structure
+## 📁 Project Structure
 mini-blog/
 ├── backend/     # NestJS API
 ├── frontend/    # React UI
 └── package.json # Dev scripts & concurrently
 
-### 6.📜 Scripts
+## 📜 Scripts
 
 npm run dev             # Run frontend and backend together
 npm run start:frontend  # Run only React

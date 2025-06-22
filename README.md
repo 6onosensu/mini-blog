@@ -20,32 +20,38 @@ A fullstack blog platform built with **NestJS** (backend) and **React + TypeScri
 ```bash
 git clone https://github.com/6onosensu/mini-blog.git
 cd mini-blog
+```
+
 
 ### 2. Install dependencies
 Root (for dev scripts)
 
 ```bash
 npm install
----
-Backend
+```
+
+#### Backend
 
 ```bash
 cd backend
 npm install
+```
 
-Frontend
+#### Frontend
 
 ```bash
 cd ../frontend
 npm install
+```
 
 ### 3.🧪 Development
 From the project root:
 
 ```bash
 npm run dev
+```
 
-This will start:
+#### This will start:
 Frontend on http://localhost:3000
 Backend on http://localhost:3001 (default)
 

@@ -1,30 +1,34 @@
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const mockPost = {
-  id: 1,
-  title: "Building a Blog with React & NestJS",
-  content: `This is a detailed post explaining how to build a fullstack blog using React, NestJS, PostgreSQL, and Tailwind CSS.`,
-  tags: ["react", "nestjs", "fullstack"],
-};
+interface Post {
+  id: number;
+  title: string;
+  content: any;
+  coverImage?: string;
+  tags?: string[];
+}
 
 const Post = () => {
   const { id } = useParams();
+  const [post, setPost] = useState<Post | null>(null);
 
-  // Normally you'd fetch post by ID here
+  if (!post) return <p className="text-center mt-10">Loading post...</p>;
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white mt-6 rounded-lg shadow">
-      <h1 className="text-3xl font-bold text-blue-700 mb-4">{mockPost.title}</h1>
-      <div className="text-sm text-gray-500 mb-4">Post ID: {id}</div>
-      <p className="text-gray-800 leading-relaxed whitespace-pre-line">{mockPost.content}</p>
-      <div className="mt-6 flex flex-wrap gap-2">
-        {mockPost.tags.map((tag) => (
-          <span
-            key={tag}
-            className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded"
-          >
-            #{tag}
-          </span>
-        ))}
+      {post.coverImage && (
+        <img
+          src={post.coverImage}
+          alt={post.title}
+          className="mb-4 w-full h-60 object-cover rounded"
+        />
+      )}
+
+      <h1 className="text-3xl font-bold text-blue-700 mb-4">{post.title}</h1>
+
+      <div className="mt-6 text-sm text-gray-600">
+        Tags: {post.tags?.join(", ") || "none"}
       </div>
     </div>
   );

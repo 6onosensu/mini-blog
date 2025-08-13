@@ -1,43 +1,48 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { getPosts } from '../api/posts';
 
-const mockPosts = [
-  {
-    id: 1,
-    title: "Building a Blog with React & NestJS",
-    preview: "Learn how to build a fullstack blog using modern tools like NestJS, TypeORM, and React.",
-    tags: ["react", "nestjs", "fullstack"],
-  },
-  {
-    id: 2,
-    title: "Why TypeScript is Awesome",
-    preview: "Let's explore some real-world benefits of using TypeScript in both frontend and backend projects.",
-    tags: ["typescript", "productivity"],
-  },
-];
+interface Post {
+  id: number;
+  title: string;
+  content: any;
+  coverImage?: string;
+  tags?: string[];
+}
 
 const Home = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    getPosts()
+      .then(setPosts)
+      .catch((err) => console.error('Error loading posts:', err));
+  }, []);
   return (
+
     <div className="max-w-6xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold mb-6">Latest Posts</h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {mockPosts.map((post) => (
+        {posts.map((post) => (
           <div
             key={post.id}
             className="bg-white rounded-xl shadow-sm hover:shadow-md transition p-5"
           >
+            {post.coverImage && (
+              <img
+                src={post.coverImage}
+                alt={post.title}
+                className="mb-2 w-full h-48 object-cover rounded"
+              />
+            )}
             <Link to={`/post/${post.id}`}>
               <h2 className="text-xl font-semibold text-blue-700 hover:underline">{post.title}</h2>
             </Link>
-            <p className="text-gray-600 text-sm mt-2">{post.preview}</p>
+            
             <div className="mt-4 flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded"
-                >
-                  #{tag}
-                </span>
-              ))}
+              <div className="text-sm text-gray-600">
+                Tags: {post.tags?.join(', ') || 'none'}
+              </div>
             </div>
           </div>
         ))}

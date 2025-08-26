@@ -1,0 +1,32 @@
+# ───── COMMON ─────
+node_modules/
+dist/
+build/
+.env
+.env.*
+*.log
+logs/
+.cache/
+*.tsbuildinfo
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.sqlite
+pgdata/
+
+# ───── FRONTEND ─────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.next/
+frontend/.env
+frontend/.env.*
+
+# ───── BACKEND ─────
+backend/node_modules/
+backend/dist/
+backend/.env
+backend/.env.*
+backend/pgdata/
+backend/*.tsbuildinfo

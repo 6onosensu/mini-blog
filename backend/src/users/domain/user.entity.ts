@@ -37,9 +37,6 @@ export class User {
   }
 
   changeName(firstName: string, lastName: string): void {
-    if (!firstName.trim() || !lastName.trim()) {
-      throw new Error('Name fields must not be empty');
-    }
     this.firstName = firstName;
     this.lastName = lastName;
   } 
@@ -53,14 +50,6 @@ export class User {
   }
 
   changeEmail(newEmail: string): void {
-    if (!newEmail.trim()) {
-      throw new Error('Email must not be empty');
-    }
-
-    if (!newEmail.includes('@') || !newEmail.includes('.')) {
-      throw new Error('Invalid email format');
-    }
-
     if (this.status === UserStatus.Blocked) {
       throw new Error('Blocked users cannot change email');
     }
@@ -73,13 +62,8 @@ export class User {
     newPlain: string
   ): void {
     const isCurrentCorrect = compareSync(currentPlain, this.passwordHash);
-    
     if (!isCurrentCorrect) {
       throw new Error('Current password is incorrect');
-    }
-
-    if (newPlain.length < 8) {
-      throw new Error('New password must be at least 8 characters');
     }
 
     this.passwordHash = hashSync(newPlain, 10);

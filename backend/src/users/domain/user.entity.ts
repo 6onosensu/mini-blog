@@ -1,6 +1,8 @@
+import { CreateUserDto } from "../presentation/dto/create-user.dto";
 import { UserRole } from "./user-role.enum";
 import { UserStatus } from "./user-status.enum";
 import { compareSync, hashSync } from 'bcrypt';
+import { v4 } from 'uuid';
 
 export class User {
   constructor(
@@ -18,9 +20,6 @@ export class User {
   ) {}
 
   activate(): void {
-    if (this.status === UserStatus.Blocked) {
-      throw new Error('Blocked users cannot be activated')
-    }
     this.status = UserStatus.Active;
   }
 
@@ -69,4 +68,20 @@ export class User {
     this.passwordHash = hashSync(newPlain, 10);
   }
 
+   static register(dto: CreateUserDto, hashedPassword: string): User {
+    const now = new Date().toISOString();
+    return new User(
+      v4(),
+      dto.email.toLowerCase(),
+      hashedPassword,
+      dto.firstName,
+      dto.lastName,
+      dto.avatarUrl ?? '',
+      dto.socialLinks ?? {},
+      UserRole.Guest,
+      UserStatus.Pending,
+      now,
+      now
+    );
+  }
 }

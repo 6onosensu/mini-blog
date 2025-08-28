@@ -3,12 +3,17 @@ import { LoginDto } from "./dto/login.dto";
 import { LoginUseCase } from "./application/login.use-case";
 import { CreateUserDto } from "src/users/presentation/dto/create-user.dto";
 import { RegisterUserUseCase } from "src/users/application/register-user.use-case";
+import { RefreshTokenDto } from "./dto/refresh-token.dto";
+import { RefreshTokenUseCase } from "./application/refresh-token.use-case";
+import { ForgotPasswordDto } from "./dto/forgot-password.dto";
+import { ResetPasswordDto } from "./dto/reset-password.dto";
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
-    private readonly registerUserUseCase: RegisterUserUseCase
+    private readonly registerUserUseCase: RegisterUserUseCase,
+    private readonly refreshUseCase: RefreshTokenUseCase
   ) {}
 
   @Post('login')

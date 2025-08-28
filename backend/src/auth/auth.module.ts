@@ -5,12 +5,15 @@ import { AuthController } from "./auth.controller";
 import { UsersModule } from "src/users/users.module";
 import { LoginUseCase } from "./application/login.use-case";
 import { RegisterUserUseCase } from "src/users/application/register-user.use-case";
+import { RefreshTokenUseCase } from "./application/refresh-token.use-case";
 
 @Module({
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET!,
-      signOptions: { expiresIn: process.env.JWT_ACCESS_EXPIRES},
+      signOptions: { 
+        expiresIn: process.env.JWT_ACCESS_EXPIRES
+      },
     }),
     UsersModule, 
   ],
@@ -19,6 +22,7 @@ import { RegisterUserUseCase } from "src/users/application/register-user.use-cas
     JwtStrategy,
     RegisterUserUseCase,
     LoginUseCase,
+    RefreshTokenUseCase,
   ],
 })
 

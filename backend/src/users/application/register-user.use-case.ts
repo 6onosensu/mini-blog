@@ -1,39 +1,22 @@
-import { ConflictException, Injectable } from "@nestjs/common";
-import { UsersRepository } from "../infrastructure/users.repository.interface";
+import { Injectable } from "@nestjs/common";
 import { User } from "../domain/user.entity";
-import { UserStatus } from "../domain/user-status.enum";
-import { UserRole } from "../domain/user-role.enum";
 import { CreateUserDto } from '../presentation/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
+import { UserValidatorService } from "./user-validator.service";
+import { UsersRepository } from "../infrastructure/users.repository.interface";
 
 @Injectable()
 export class RegisterUserUseCase {
   constructor(
+    private readonly userValidator: UserValidatorService,
     private readonly usersRepo: UsersRepository
   ) {}
 
   async execute(dto: CreateUserDto): Promise<void> {
-    const existingUser = await this.usersRepo.findByEmail(dto.email);
-    if (existingUser) {
-      throw new ConflictException('User with this email already exists');
-    }
+    await this.userValidator.ensureEmailIsUnique(dto.email);
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
-
-    const user = new User(
-      uuidv4(),
-      dto.email.toLowerCase(),
-      hashedPassword,
-      dto.firstName,
-      dto.lastName,
-      dto.avatarUrl ?? '',
-      dto.socialLinks ?? {},
-      UserRole.Guest,
-      UserStatus.Pending,
-      new Date().toISOString(),
-      new Date().toISOString(),
-    );
+    const user = User.register(dto, hashedPassword);
 
     await this.usersRepo.save(user);
   }

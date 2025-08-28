@@ -1,36 +1,39 @@
-import { Body, Controller, Post, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { UsersRepository } from "src/users/infrastructure/users.repository.interface";
+import { Body, Controller, Post } from "@nestjs/common";
 import { LoginDto } from "./dto/login.dto";
-import { compareSync } from 'bcrypt';
+import { LoginUseCase } from "./application/login.use-case";
+import { CreateUserDto } from "src/users/presentation/dto/create-user.dto";
+import { RegisterUserUseCase } from "src/users/application/register-user.use-case";
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly jwtService: JwtService,
-    private readonly usersRepo: UsersRepository
+    private readonly loginUseCase: LoginUseCase,
+    private readonly registerUserUseCase: RegisterUserUseCase
   ) {}
 
   @Post('login')
   async login (@Body() dto: LoginDto) {
-    const user = await this. usersRepo.findByEmail(dto.email);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+    return this.loginUseCase.execute(dto.email, dto.password);
+  }
 
-    const isPasswordValid = compareSync(dto.password, user.passwordHash)
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+  @Post('register')
+  async register(@Body() dto: CreateUserDto): Promise<{ message: string }> {
+    await this.registerUserUseCase.execute(dto);
+    return { message: 'User successfully registered' };
+  }
 
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      role: user.role,
-    };
+  @Post('refresh')
+  async refresh(@Body() dto: RefreshTokenDto) {
+    return this.refreshUseCase.execute(dto.refreshToken);
+  }
 
-    const accessToken = await this.jwtService.signAsync(payload);
+  @Post('forgot-password')
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.forgotPasswordUseCase.execute(dto.email);
+  }
 
-    return { accessToken };
+  @Post('reset-password')
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.resetPasswordUseCase.execute(dto.token, dto.newPassword);
   }
 }

@@ -10,6 +10,7 @@ import { ResetPasswordDto } from "./dto/reset-password.dto";
 
 @Controller('auth')
 export class AuthController {
+  forgotPasswordUseCase: any;
   constructor(
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUserUseCase: RegisterUserUseCase,

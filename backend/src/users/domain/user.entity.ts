@@ -11,77 +11,75 @@ export class User {
     public passwordHash: string,
     public firstName: string,
     public lastName: string,
-    public avatarUrl: string,
+    public avatarUrl: string | null,
     public socialLinks: Record<string, string>,
     public role: UserRole,
     public status: UserStatus = UserStatus.Pending,
-    public createdAt: string,
-    public updatedAt: string,
+    public createdAt: Date,
+    public updatedAt: Date,
+    public resetTokenHash: string | null,
+    public resetTokenExpires: Date | null,
   ) {}
 
-  activate(): void {
+  get isActive() { return this.status === UserStatus.Active; }
+  get isPending() { return this.status === UserStatus.Pending; }
+  get isBlocked() { return this.status === UserStatus.Blocked; }
+
+  activate() { 
+    if (!this.isPending) throw new Error("Only pending users can be activated!")
     this.status = UserStatus.Active;
+    return this;
+  }
+  
+  block() { 
+    this.status = UserStatus.Blocked; 
+    return this;
   }
 
-  block(): void {
-    this.status = UserStatus.Blocked;
-  }
-
-  isActive(): boolean {
-    return this.status === UserStatus.Active;
-  }
-
-  isBlocked(): boolean {
-    return this.status === UserStatus.Blocked;
-  }
-
-  changeName(firstName: string, lastName: string): void {
+  changeName(firstName: string, lastName: string) {
     this.firstName = firstName;
     this.lastName = lastName;
+    return this;
   } 
   
-  updateSocialLinks(links: Record<string, string>): void {
+  updateSocialLinks(links: Record<string, string>) {
     this.socialLinks = links;
+    return this;
   }
 
-  changeAvatar(url: string): void {
+  changeAvatar(url: string | null) {
     this.avatarUrl = url;
+    return this;
   }
 
-  changeEmail(newEmail: string): void {
-    if (this.status === UserStatus.Blocked) {
-      throw new Error('Blocked users cannot change email');
-    }
-
+  changeEmail(newEmail: string) {
+    if (this.isBlocked) throw new Error('Blocked users cannot change email');
     this.email = newEmail.toLowerCase();
+    return this;
   }
 
-  changePassword(
-    currentPlain: string, 
-    newPlain: string
-  ): void {
-    const isCurrentCorrect = compareSync(currentPlain, this.passwordHash);
-    if (!isCurrentCorrect) {
-      throw new Error('Current password is incorrect');
-    }
-
+  changePassword(currentPlain: string, newPlain: string) {
+    const ok = compareSync(currentPlain, this.passwordHash);
+    if (!ok) throw new Error('Current password is incorrect');
     this.passwordHash = hashSync(newPlain, 10);
+    return this;
   }
 
    static register(dto: CreateUserDto, hashedPassword: string): User {
-    const now = new Date().toISOString();
     return new User(
       v4(),
       dto.email.toLowerCase(),
       hashedPassword,
       dto.firstName,
       dto.lastName,
-      dto.avatarUrl ?? '',
+      dto.avatarUrl ?? null,
       dto.socialLinks ?? {},
       UserRole.Guest,
       UserStatus.Pending,
-      now,
-      now
+      new Date(),
+      new Date(),
+      null,
+      null,
     );
   }
 }

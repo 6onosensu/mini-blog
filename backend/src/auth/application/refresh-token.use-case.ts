@@ -6,7 +6,7 @@ import { UserValidatorService } from "src/users/application/user-validator.servi
 
 @Injectable()
 export class RefreshTokenUseCase {
-  constructor(
+  constructor (
     private readonly jwtService: JwtService,
     private readonly userValidator: UserValidatorService
   ) {}

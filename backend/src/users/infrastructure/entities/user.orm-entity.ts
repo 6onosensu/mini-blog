@@ -42,4 +42,10 @@ export class UserOrmEntity {
 
   @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date;
+  
+  @Column({ name: 'reset_token_hash', type: 'varchar', length: 128, nullable: true })
+  resetTokenHash: string | null;
+
+  @Column({ name: 'reset_token_expires', type: 'timestamptz', nullable: true })
+  resetTokenExpires: Date | null;
 }

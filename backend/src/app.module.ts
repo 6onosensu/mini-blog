@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { MailerModule, MailerService } from '@nestjs-modules/mailer';
+
 
 @Module({
   imports: [
@@ -17,6 +19,20 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: false, 
     }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT ?? 587),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      },
+      defaults: {
+        from: process.env.MAIL_FROM, // ?? '"Mini Blog" <no-reply@mini-blog.com>',
+      },
+    })
   ],
   controllers: [AppController],
   providers: [AppService],

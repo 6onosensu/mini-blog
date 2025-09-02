@@ -3,18 +3,20 @@ import { UserOrmEntity } from "../entities/user.orm-entity";
 
 export class UserMapper {
   static toDomain(entity: UserOrmEntity): User {
-     return new User(
+    return new User(
       entity.id,
       entity.email,
       entity.passwordHash,
       entity.firstName,
       entity.lastName,
-      entity.avatarUrl,
-      entity.socialLinks,
+      entity.avatarUrl ?? null,
+      entity.socialLinks ?? {},
       entity.role,
       entity.status,
-      entity.createdAt.toISOString(),
-      entity.updatedAt.toISOString(),
+      entity.createdAt,
+      entity.updatedAt,  
+      entity.resetTokenHash ?? null,
+      entity.resetTokenExpires ?? null,
     );
   }
 
@@ -25,12 +27,14 @@ export class UserMapper {
     orm.passwordHash = user.passwordHash;
     orm.firstName = user.firstName;
     orm.lastName = user.lastName;
-    orm.avatarUrl = user.avatarUrl;
-    orm.socialLinks = user.socialLinks;
+    orm.avatarUrl = user.avatarUrl ?? '';
+    orm.socialLinks = user.socialLinks ?? {};
     orm.role = user.role;
     orm.status = user.status;
-    orm.createdAt = new Date(user.createdAt);
-    orm.updatedAt = new Date(user.updatedAt);
+    orm.createdAt = user.createdAt;
+    orm.updatedAt = user.updatedAt;
+    orm.resetTokenHash = user.resetTokenHash ?? null;
+    orm.resetTokenExpires = user.resetTokenExpires ?? null;
     return orm;
   }
 }

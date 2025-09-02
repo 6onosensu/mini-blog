@@ -5,4 +5,6 @@ export abstract class UsersRepository {
   abstract findByEmail(email: string): Promise<User | null>;
   abstract save(user: User): Promise<void>;
   abstract delete(id: string): Promise<void>;
+  abstract saveResetToken(id: string, tokenHash: string, expiresAt: Date): Promise<void>;
+  abstract findByResetTokenHash(tokenHash: string): Promise<User | null>;
 }

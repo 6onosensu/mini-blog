@@ -31,4 +31,18 @@ export class UsersRepositoryTypeOrm implements UsersRepository {
   async delete(id: string): Promise<void> {
     await this.repo.delete(id);
   }
+
+  async saveResetToken(userId: string, tokenHash: string, expiresAt: Date): Promise<void> {
+    await this.repo.update(
+      { id: userId },
+      { resetTokenHash: tokenHash, resetTokenExpires: expiresAt },
+    );
+  }
+
+  async findByResetTokenHash(tokenHash: string): Promise<User | null> {
+    const entity = await this.repo.findOne({
+      where: { resetTokenHash: tokenHash }
+    });
+    return entity ? UserMapper.toDomain(entity) : null;
+  }
 }

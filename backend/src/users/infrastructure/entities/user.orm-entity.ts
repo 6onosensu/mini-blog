@@ -31,10 +31,18 @@ export class UserOrmEntity {
   @Column({ type: 'jsonb', default: {} })
   socialLinks: Record<string, string>;
 
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.Guest })
+  @Column({ 
+    type: 'enum', 
+    enum: UserRole, 
+    default: UserRole.Guest 
+  })
   role: UserRole;
 
-  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.Pending })
+  @Column({ 
+    type: 'enum', 
+    enum: UserStatus, 
+    default: UserStatus.Pending 
+  })
   status: UserStatus;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
@@ -43,9 +51,18 @@ export class UserOrmEntity {
   @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date;
   
-  @Column({ name: 'reset_token_hash', type: 'varchar', length: 128, nullable: true })
+  @Column({ 
+    name: 'reset_token_hash', 
+    type: 'varchar', 
+    length: 128, 
+    nullable: true 
+  })
   resetTokenHash: string | null;
 
-  @Column({ name: 'reset_token_expires', type: 'timestamptz', nullable: true })
+  @Column({ 
+    name: 'reset_token_expires', 
+    type: 'timestamptz', 
+    nullable: true 
+  })
   resetTokenExpires: Date | null;
 }

@@ -32,7 +32,7 @@ export class UserValidatorService {
       throw new NotFoundException('User not found');
     }
 
-    if (user.isBlocked) {
+    if (!user.isActive) {
       throw new UnauthorizedException('User is blocked');
     }
   }

@@ -7,4 +7,5 @@ export abstract class UsersRepository {
   abstract delete(id: string): Promise<void>;
   abstract saveResetToken(id: string, tokenHash: string, expiresAt: Date): Promise<void>;
   abstract findByResetTokenHash(tokenHash: string): Promise<User | null>;
+  abstract clearResetToken(userId: string): Promise<void>;
 }

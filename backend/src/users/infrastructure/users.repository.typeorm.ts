@@ -32,7 +32,11 @@ export class UsersRepositoryTypeOrm implements UsersRepository {
     await this.repo.delete(id);
   }
 
-  async saveResetToken(userId: string, tokenHash: string, expiresAt: Date): Promise<void> {
+  async saveResetToken(
+    userId: string, 
+    tokenHash: string, 
+    expiresAt: Date
+  ): Promise<void> {
     await this.repo.update(
       { id: userId },
       { resetTokenHash: tokenHash, resetTokenExpires: expiresAt },
@@ -44,5 +48,12 @@ export class UsersRepositoryTypeOrm implements UsersRepository {
       where: { resetTokenHash: tokenHash }
     });
     return entity ? UserMapper.toDomain(entity) : null;
+  }
+
+  async clearResetToken(userId: string): Promise<void> {
+    await this.repo.update(
+      { id: userId }, 
+      { resetTokenHash: null, resetTokenExpires: null }
+    );
   }
 }

@@ -61,10 +61,15 @@ export class User {
   changePassword(currentPlain: string, newPlain: string) {
     const ok = compareSync(currentPlain, this.passwordHash);
     if (!ok) throw new Error('Current password is incorrect');
-    this.passwordHash = hashSync(newPlain, 10);
+    this.setPassword(newPlain);
     return this;
   }
 
+  setPassword(newPlain: string) {
+    this.passwordHash = hashSync(newPlain, 10);
+    return this;
+  }
+  
    static register(dto: CreateUserDto, hashedPassword: string): User {
     return new User(
       v4(),

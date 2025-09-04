@@ -6,6 +6,8 @@ import { UsersModule } from "src/users/users.module";
 import { LoginUseCase } from "./application/login.use-case";
 import { RegisterUserUseCase } from "src/users/application/register-user.use-case";
 import { RefreshTokenUseCase } from "./application/refresh-token.use-case";
+import { ResetPasswordUseCase } from "./application/reset-password.use-case";
+import { ForgotPasswordUseCase } from "./application/forgot-password.use.case";
 
 @Module({
   imports: [
@@ -20,9 +22,10 @@ import { RefreshTokenUseCase } from "./application/refresh-token.use-case";
   controllers: [AuthController],
   providers: [
     JwtStrategy,
-    RegisterUserUseCase,
     LoginUseCase,
     RefreshTokenUseCase,
+    ForgotPasswordUseCase,
+    ResetPasswordUseCase,
   ],
 })
 

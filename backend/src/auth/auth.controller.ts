@@ -7,14 +7,17 @@ import { RefreshTokenDto } from "./dto/refresh-token.dto";
 import { RefreshTokenUseCase } from "./application/refresh-token.use-case";
 import { ForgotPasswordDto } from "./dto/forgot-password.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
+import { ForgotPasswordUseCase } from "./application/forgot-password.use.case";
+import { ResetPasswordUseCase } from "./application/reset-password.use-case";
 
 @Controller('auth')
 export class AuthController {
-  forgotPasswordUseCase: any;
   constructor(
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUserUseCase: RegisterUserUseCase,
-    private readonly refreshUseCase: RefreshTokenUseCase
+    private readonly refreshUseCase: RefreshTokenUseCase,
+    private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
+    private readonly resetPasswordUseCase: ResetPasswordUseCase,
   ) {}
 
   @Post('login')
